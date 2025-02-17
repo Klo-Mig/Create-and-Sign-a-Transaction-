@@ -1,0 +1,17 @@
+from web3 import Web3
+
+w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"))
+sender = "0xYourAddressHere"
+private_key = "YOUR_PRIVATE_KEY"
+
+txn = {
+    "to": "0xRecipientAddressHere",
+    "value": w3.to_wei(0.01, "ether"),
+    "gas": 21000,
+    "gasPrice": w3.to_wei("20", "gwei"),
+    "nonce": w3.eth.get_transaction_count(sender),
+}
+
+signed_txn = w3.eth.account.sign_transaction(txn, private_key)
+tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+print(f"Transaction sent! Hash: {w3.to_hex(tx_hash)}")
